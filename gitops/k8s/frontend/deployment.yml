@@ -5,9 +5,17 @@ metadata:
   namespace: boutique
 spec:
   replicas: 1
+
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 0
+      maxUnavailable: 1
+
   selector:
     matchLabels:
       app: frontend
+
   template:
     metadata:
       labels:
@@ -21,6 +29,7 @@ spec:
           env:
             - name: REACT_APP_API_URL
               value: "http://gateway:3001/api"
+
 ---
 apiVersion: v1
 kind: Service
@@ -35,4 +44,3 @@ spec:
       port: 3000
       targetPort: 3000
   type: ClusterIP
-
